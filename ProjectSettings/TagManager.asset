@@ -9,6 +9,8 @@ TagManager:
   - Crosshair
   - Look Root
   - FP Camera
+  - Arrow
+  - Name Tag
   layers:
   - Default
   - TransparentFX

@@ -47,6 +47,11 @@ public class Tags
 
 }
 
+public class Prefs
+{
+    public const string PLAYER_NAME_PREF = "PlayerName";
+}
+
 
 
 
