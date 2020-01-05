@@ -1,12 +1,18 @@
 ﻿using Photon.Pun;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
+
 public class GameManager : MonoBehaviourPunCallbacks
 {
 
     #region Public Fields
 
     static public GameManager Instance;
+    public GameObject chatPanel, textObject;
+    public InputField chatInputField;
+    public ChatManager chatManager;
 
     #endregion
 
@@ -16,6 +22,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject chatMenu;
     public GameObject playerController;
     private bool isShowing;
+    [SerializeField]
+    private List<Message> messageList = new List<Message>();
+    [SerializeField]
+    private int maxMessages;
 
     #endregion
 
@@ -38,6 +48,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             isShowing = !isShowing;
             chatMenu.SetActive(isShowing);
+        }
+        if (Input.GetKeyDown(KeyCode.Return) && isShowing && chatInputField.text != "")
+        {
+            SendMessageToChat(chatInputField.text);
+            chatInputField.text = "";
         }
     }
 
@@ -70,4 +85,29 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.LoadLevel(0);
     }
+
+    public void SendMessageToChat(string text)
+    {
+        if (messageList.Count >= maxMessages)
+        {
+            Destroy(messageList[0].textObject.gameObject);
+            messageList.Remove(messageList[0]);
+        }
+
+        Message newMessage = new Message();
+        newMessage.text = text;
+        messageList.Add(newMessage);
+        GameObject newText = Instantiate(textObject, chatPanel.transform);
+        newMessage.textObject = newText.GetComponent<Text>();
+        newMessage.textObject.text = newMessage.text;
+        messageList.Add(newMessage);
+        chatManager.sendMessage(text);
+    }
+}
+
+[System.Serializable]
+public class Message
+{
+    public string text;
+    public Text textObject;
 }

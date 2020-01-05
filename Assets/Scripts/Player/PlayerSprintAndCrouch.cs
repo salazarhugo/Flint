@@ -50,16 +50,16 @@ public class PlayerSprintAndCrouch : MonoBehaviourPunCallbacks, IPunObservable
             Crouch();
         }
         else
-        {
+        {//
             if (isCrouching)
             {
                 // if remote player is crouching then set him to crouch postition
-                //look_Root.localPosition = new Vector3(0f, crouch_Height, 0f);
+                look_Root.localPosition = new Vector3(0f, crouch_Height, 0f);
             }
             else
             {
                 // if remote player is not crouching then set him to standing up postition
-                //look_Root.localPosition = new Vector3(0f, stand_Height, 0f);
+                look_Root.localPosition = new Vector3(0f, stand_Height, 0f);
             }
         }
       

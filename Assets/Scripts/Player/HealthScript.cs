@@ -68,7 +68,7 @@ public class HealthScript : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     void PlayerDied()
-    {
+    {//4
         is_Dead = false;
         health = 100f;
         transform.position = new Vector3(Random.Range(-10f, 10f), 10f, Random.Range(-10f, 10f));
