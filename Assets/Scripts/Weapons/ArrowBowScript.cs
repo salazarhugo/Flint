@@ -13,11 +13,11 @@ public class ArrowBowScript : MonoBehaviourPunCallbacks
 
     #region Public Fields
 
-    public float speed = 30f;
+    public float speed = 50f;
 
     public float deactivate_Timer = 3f;
 
-    public float damage = 50f;
+    public float damage = 200f;
 
     #endregion
 
@@ -56,17 +56,16 @@ public class ArrowBowScript : MonoBehaviourPunCallbacks
 
     void OnTriggerEnter(Collider target)
     {
-        if (!photonView.IsMine)
-            return;
+        /*if (!photonView.IsMine)
+            return;*/
         // after we touch an enemy deactivate game object
         if (target.tag == Tags.PLAYER_TAG)
         {
-            photonView.RPC("ShootArrow", RpcTarget.All, target);
+            ShootArrow(target);
             Destroy(gameObject);
         }
     }
 
-    [PunRPC]
     void ShootArrow(Collider target)
     {
         target.GetComponent<HealthScript>().ApplyDamage(damage);

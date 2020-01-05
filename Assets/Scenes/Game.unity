@@ -2044,6 +2044,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a521ab92aa88a84b80fd6c9017b0c3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 1122036388}
 --- !u!114 &1086465201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2108,7 +2109,7 @@ MonoBehaviour:
   chatMenu: {fileID: 915203414}
   playerController: {fileID: 0}
   messageList: []
-  maxMessages: 25
+  maxMessages: 20
 --- !u!4 &1122036389
 Transform:
   m_ObjectHideFlags: 0
