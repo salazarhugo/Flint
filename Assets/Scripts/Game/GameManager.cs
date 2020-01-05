@@ -44,15 +44,21 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             isShowing = !isShowing;
-            chatMenu.SetActive(isShowing);
-        }
-        if (Input.GetKeyDown(KeyCode.Return) && isShowing && chatInputField.text != "")
-        {
-            SendMessageToChat(chatInputField.text);
-            chatInputField.text = "";
+            chatInputField.gameObject.SetActive(isShowing);
+
+            if (!isShowing && chatInputField.text != "")
+            {
+                SendMessageToChat(chatInputField.text);
+                chatInputField.text = "";
+                //chatInputField.gameObject.SetActive(false);
+            } else
+            {
+                chatInputField.Select();
+            }
+            chatInputField.Select();
         }
     }
 
