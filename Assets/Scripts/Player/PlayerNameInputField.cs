@@ -11,13 +11,7 @@ public class PlayerNameInputField : MonoBehaviour
 {
     #region Private Constants
 
-
-    // Store the PlayerPref Key to avoid typos
-    const string playerNamePrefKey = "PlayerName";
-
-
     #endregion
-
 
     #region MonoBehaviour CallBacks
 
@@ -31,9 +25,9 @@ public class PlayerNameInputField : MonoBehaviour
         InputField _inputField = this.GetComponent<InputField>();
         if (_inputField != null)
         {
-            if (PlayerPrefs.HasKey(playerNamePrefKey))
+            if (PlayerPrefs.HasKey(Prefs.PLAYER_NAME_PREF))
             {
-                defaultName = PlayerPrefs.GetString(playerNamePrefKey);
+                defaultName = PlayerPrefs.GetString(Prefs.PLAYER_NAME_PREF);
                 _inputField.text = defaultName;
             }
         }
@@ -43,9 +37,7 @@ public class PlayerNameInputField : MonoBehaviour
 
     #endregion
 
-
     #region Public Methods
-
 
     /// <summary>
     /// Sets the name of the player, and save it in the PlayerPrefs for future sessions.
@@ -61,10 +53,8 @@ public class PlayerNameInputField : MonoBehaviour
         }
         PhotonNetwork.NickName = value;
 
-
-        PlayerPrefs.SetString(playerNamePrefKey, value);
+        PlayerPrefs.SetString(Prefs.PLAYER_NAME_PREF, value);
     }
-
 
     #endregion
 }

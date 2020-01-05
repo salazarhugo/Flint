@@ -1,18 +1,22 @@
 ﻿using ExitGames.Client.Photon;
 using Photon.Chat;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-public class ChatManager : MonoBehaviour, IChatClientListener
+public class ChatManager : MonoBehaviourPunCallbacks, IChatClientListener
 {
     ConnectionProtocol connectProtocol = ConnectionProtocol.Udp;
     ChatClient chatClient;
+    [SerializeField]
+    private GameManager gameManager;
 
-    void Awake()
+    void Start()
     {
         AuthenticationValues authValues = new AuthenticationValues();
-        authValues.UserId = "uniqueUserNameHere";
+        authValues.UserId = PlayerPrefs.GetString(Prefs.PLAYER_NAME_PREF);
         authValues.AuthType = CustomAuthenticationType.None;
         chatClient = new ChatClient(this, connectProtocol);
         chatClient.ChatRegion = "EU";
@@ -22,7 +26,6 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     void Update()
     {
         if (chatClient != null) { chatClient.Service(); }
-
     }
 
     public void sendMessage(string message)
@@ -43,7 +46,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public void OnConnected()
     {
         chatClient.Subscribe(new string[] { "channelNameHere" }); //subscribe to chat channel once connected to server
-        chatClient.PublishMessage("channelNameHere", "salut les kheys");
+        chatClient.PublishMessage("channelNameHere", "User joined");
     }
 
     public void OnDisconnected()
@@ -54,7 +57,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
     {
         Debug.Log("sender: " + senders[0] + "message: " + messages[0]);
-
+        gameManager.SendMessageToChat($"{senders[0]}: {messages[0]}");
     }
 
     public void OnPrivateMessage(string sender, object message, string channelName)

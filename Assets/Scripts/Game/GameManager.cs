@@ -48,17 +48,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             isShowing = !isShowing;
             chatInputField.gameObject.SetActive(isShowing);
+            chatInputField.Select();
+            chatInputField.ActivateInputField();
 
             if (!isShowing && chatInputField.text != "")
             {
-                SendMessageToChat(chatInputField.text);
+                chatManager.sendMessage(chatInputField.text);
                 chatInputField.text = "";
-                //chatInputField.gameObject.SetActive(false);
-            } else
-            {
-                chatInputField.Select();
             }
-            chatInputField.Select();
         }
     }
 
@@ -102,12 +99,10 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         Message newMessage = new Message();
         newMessage.text = text;
-        messageList.Add(newMessage);
         GameObject newText = Instantiate(textObject, chatPanel.transform);
         newMessage.textObject = newText.GetComponent<Text>();
         newMessage.textObject.text = newMessage.text;
         messageList.Add(newMessage);
-        chatManager.sendMessage(text);
     }
 }
 
