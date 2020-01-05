@@ -20,21 +20,17 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     private GameObject crosshair;
 
-    private bool is_Aiming;
+    private bool isAiming;
 
     [SerializeField]
-    private GameObject arrow_Prefab, spear_Prefab;
+    private GameObject arrowPrefab, spearPrefab;
 
     [SerializeField]
-    private Transform arrow_Bow_StartPosition;
+    private Transform arrowBowStartPosition;
 
     #endregion
 
     #region Public Fields
-
-    public float fireRate = 15f;
-
-    public float damage = 20f;
 
     #endregion
 
@@ -46,8 +42,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         weaponManager = GetComponent<WeaponManager>();
         zoomCameraAnim = transform.Find(Tags.LOOK_ROOT).transform.Find(Tags.ZOOM_CAMERA).GetComponent<Animator>();
         crosshair = GameObject.FindWithTag(Tags.CROSSHAIR);
-        //mainCam = Camera.main;
     }
+
     void Update()
     {
         if (!photonView.IsMine)
@@ -70,9 +66,9 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             // if Time is greater than the nextTimeToFire
             if (Input.GetMouseButton(0) && Time.time >= nextTimeToFire)
             {
-                photonView.RPC("Shoot", RpcTarget.All);
-                nextTimeToFire = Time.time + 1f / fireRate;
+                nextTimeToFire = Time.time + 1f / weaponManager.GetCurrentSelectedWeapon().fireRate;
                 weaponManager.GetCurrentSelectedWeapon().ShootAnimation();
+                photonView.RPC("Shoot", RpcTarget.All);
             }
             // if we have a regular weapon that shoots once
         }
@@ -94,8 +90,9 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 else
                 {
                     // we have an arrow or spear
-                    if (is_Aiming)
+                    if (isAiming && Time.time >= nextTimeToFire)
                     {
+                        nextTimeToFire = Time.time + 1f / weaponManager.GetCurrentSelectedWeapon().fireRate;
                         weaponManager.GetCurrentSelectedWeapon().ShootAnimation();
                         if (weaponManager.GetCurrentSelectedWeapon().bulletType
                            == WeaponBulletType.ARROW)
@@ -139,28 +136,28 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             if (Input.GetMouseButtonDown(1))
             {
                 weaponManager.GetCurrentSelectedWeapon().Aim(true);
-                is_Aiming = true;
+                isAiming = true;
             }
             if (Input.GetMouseButtonUp(1))
             {
                 weaponManager.GetCurrentSelectedWeapon().Aim(false);
-                is_Aiming = false;
+                isAiming = false;
             }
         }
     }
 
-void ThrowArrowOrSpear(bool throwArrow)
+    void ThrowArrowOrSpear(bool throwArrow)
     {
         if (throwArrow)
         {
-            GameObject arrow = Instantiate(arrow_Prefab);
-            arrow.transform.position = arrow_Bow_StartPosition.position;
+            GameObject arrow = PhotonNetwork.Instantiate(arrowPrefab.name, arrowBowStartPosition.position, arrowBowStartPosition.rotation);
+            arrow.transform.position = arrowBowStartPosition.position;
             arrow.GetComponent<ArrowBowScript>().Launch(mainCam);
         }
         else
         {
-            GameObject spear = Instantiate(spear_Prefab);
-            spear.transform.position = arrow_Bow_StartPosition.position;
+            GameObject spear = Instantiate(spearPrefab);
+            spear.transform.position = arrowBowStartPosition.position;
             spear.GetComponent<ArrowBowScript>().Launch(mainCam);
         }
     }
@@ -194,6 +191,8 @@ void ThrowArrowOrSpear(bool throwArrow)
         }
         
     }
+
+
 
     #endregion
 }

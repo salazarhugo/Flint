@@ -16,7 +16,8 @@ public class PlayerStats : MonoBehaviourPunCallbacks
     [Tooltip("The Player's UI GameObject Prefab")]
     [SerializeField]
     public GameObject PlayerUiPrefab;
-  
+    [SerializeField]
+    private Camera mainCam;
     public HealthScript healthScript;
 
     #endregion

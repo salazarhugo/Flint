@@ -42,6 +42,7 @@ public class WeaponHandler : MonoBehaviour
     public WeaponFireType fireType;
     public WeaponBulletType bulletType;
     public float damage;
+    public float fireRate;
     public GameObject attackPoint;
 
     #endregion

@@ -44,6 +44,19 @@ public class HealthScript : MonoBehaviourPunCallbacks, IPunObservable
             //PlayerDied();
         }
     }
+    void OnTriggerEnter(Collider target)
+    {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        if (target.CompareTag(Tags.ARROW_TAG))
+        {
+            ApplyDamage(200f);
+        }
+        Debug.Log("OnTriggerEnter target: " + target.name + " by " + photonView.Owner.NickName);
+    }
 
     #endregion
 
@@ -68,7 +81,7 @@ public class HealthScript : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     void PlayerDied()
-    {//4
+    {
         is_Dead = false;
         health = 100f;
         transform.position = new Vector3(Random.Range(-10f, 10f), 10f, Random.Range(-10f, 10f));

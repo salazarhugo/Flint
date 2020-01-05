@@ -8,9 +8,9 @@ public class AttackScript : MonoBehaviourPunCallbacks
     public float damage = 2f;
     public float radius = 1f;
     public LayerMask layerMask;
+    public PlayerAttack playerAttack;
 
     #endregion
-
 
     #region MonoBehaviourCallbacks
 
@@ -18,7 +18,8 @@ public class AttackScript : MonoBehaviourPunCallbacks
     {
         /*if (!photonView.IsMine)
             return;*/
-        photonView.RPC("Attack", RpcTarget.All);
+        Attack();
+        //photonView.RPC("Attack", RpcTarget.All);
     }
 
     #endregion

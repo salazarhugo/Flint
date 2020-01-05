@@ -1,11 +1,11 @@
 ﻿using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerSetup : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     Behaviour[] componentsToDisable;
-
     Camera sceneCamera;
 
     void Start()

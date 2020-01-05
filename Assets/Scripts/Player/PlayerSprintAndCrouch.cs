@@ -50,7 +50,7 @@ public class PlayerSprintAndCrouch : MonoBehaviourPunCallbacks, IPunObservable
             Crouch();
         }
         else
-        {//
+        {
             if (isCrouching)
             {
                 // if remote player is crouching then set him to crouch postition
